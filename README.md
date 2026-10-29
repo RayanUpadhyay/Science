@@ -1,6 +1,6 @@
 # science.rayanupadhyay.com
 
-Rayan Upadhyay's Games: 69 free browser games, no downloads.
+Rayan Upadhyay's Unblocked Games: 69 free browser games, no downloads.
 
 **Live:** [science.rayanupadhyay.com](https://science.rayanupadhyay.com)
 
