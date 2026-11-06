@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Science Notes</title>
+<meta name="description" content="Short, clear science notes: biology, chemistry, physics and space.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1a1a1a; --muted: #666; --line: #ddd; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: #fff; color: var(--ink); font-family: "Rubik", system-ui, sans-serif; font-size: 17px; line-height: 1.4; }
+  [hidden] { display: none !important; }
+  a { color: inherit; }
+
+
+  /* ===== the science notes front page ===== */
+  .sci { --paper:#F7F9FC; --sink:#0F2A3D; --soft:#3E5568; --teal:#0E7C86; --lime:#B6E36B; --rule:#DCE3EC; background:var(--paper); color:var(--sink); min-height:100vh; font-family:"Rubik", sans-serif; }
+  .sci a { color:var(--teal); }
+  .sci button { font-family:inherit; }
+  .s-top { border-bottom:1px solid var(--rule); background:rgba(255,255,255,.92); backdrop-filter:blur(8px); position:sticky; top:0; z-index:20; }
+  .s-top .in { max-width:1080px; margin:0 auto; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .s-brand { display:flex; align-items:center; gap:10px; font:800 23px/1 "Fraunces", Georgia, serif; color:var(--sink)!important; text-decoration:none; white-space:nowrap; }
+  .s-brand i { font-style:normal; display:grid; place-items:center; width:36px; height:36px; border-radius:10px; background:var(--teal); color:#fff; font-size:19px; }
+  .s-nav { display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .s-nav button { border:0; background:none; color:var(--sink); opacity:.75; font-weight:500; font-size:15px; padding:8px 10px; border-radius:8px; cursor:pointer; white-space:nowrap; }
+  .s-nav button:hover { opacity:1; background:#EEF3F7; }
+  .s-hero { max-width:1080px; margin:0 auto; padding:52px 24px 20px; display:grid; grid-template-columns:1.25fr .75fr; gap:40px; align-items:center; }
+  .s-kicker { margin:0 0 12px!important; font-size:13px!important; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--teal)!important; }
+  .s-hero h1 { margin:0; font:800 clamp(36px,5.4vw,60px)/1.04 "Fraunces", Georgia, serif; letter-spacing:-.02em; }
+  .s-hero p { color:var(--soft); font-size:19px; line-height:1.55; max-width:540px; }
+  .s-search { display:flex; align-items:center; gap:10px; max-width:520px; background:#fff; border:1px solid var(--rule); border-radius:14px; padding:12px 16px; box-shadow:0 2px 8px rgba(15,42,61,.06); }
+  .s-search input { flex:1; min-width:0; border:0; outline:0; font:inherit; font-size:17px; color:var(--sink); background:none; }
+  .s-stats { display:flex; gap:22px; margin-top:20px; flex-wrap:wrap; }
+  .s-stats div { font-size:14px; color:var(--soft); } .s-stats b { display:block; font:800 26px/1.1 "Fraunces", Georgia, serif; color:var(--sink); }
+  .s-atom { justify-self:center; width:min(260px,62vw); aspect-ratio:1; position:relative; }
+  .s-atom .nuc { position:absolute; inset:41%; border-radius:50%; background:radial-gradient(circle at 35% 35%,#FF9F7A,#E4572E); }
+  .s-atom .orb { position:absolute; inset:6%; border:3px solid var(--teal); border-radius:50%; opacity:.75; animation:sciSpin 9s linear infinite; }
+  .s-atom .orb:before { content:""; position:absolute; left:50%; top:-9px; width:15px; height:15px; margin-left:-7px; border-radius:50%; background:var(--teal); }
+  .s-atom .o1 { transform:scaleY(.42); } .s-atom .o2 { transform:rotate(60deg) scaleY(.42); animation-duration:7s; } .s-atom .o3 { transform:rotate(-60deg) scaleY(.42); animation-duration:11s; }
+  @keyframes sciSpin { to { rotate:360deg; } }
+  .s-main { max-width:1080px; margin:0 auto; padding:12px 24px 40px; }
+  .s-sec { margin-top:56px; scroll-margin-top:76px; }
+  .s-sec h2 { font:800 32px/1.1 "Fraunces", Georgia, serif; margin:0 0 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .s-sec h2 span { font:600 12px/1 "Rubik", sans-serif; letter-spacing:.1em; text-transform:uppercase; padding:6px 10px; border-radius:999px; background:#E3F2F3; color:var(--teal); }
+  .s-sec h2 span:empty { display:none; }
+  .s-lead { color:var(--soft); margin:-6px 0 16px; }
+  .s-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .s-tabs button { border:1px solid var(--rule); background:#fff; color:var(--sink); border-radius:999px; padding:8px 14px; font-size:15px; font-weight:500; cursor:pointer; }
+  .s-tabs button[aria-selected="true"] { background:var(--sink); border-color:var(--sink); color:#fff; }
+  .s-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+  .s-card { background:#fff; border:1px solid var(--rule); border-radius:18px; padding:22px; box-shadow:0 1px 2px rgba(15,42,61,.05); }
+  .s-card .meta { display:flex; justify-content:space-between; font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#7A8C9B; margin-bottom:8px; }
+  .s-card h3 { margin:0 0 8px; font:800 21px/1.2 "Fraunces", Georgia, serif; }
+  .s-card p { margin:0; color:var(--soft); font-size:16px; line-height:1.55; }
+  .s-card code, .s-card .eq { display:block; margin-top:12px; padding:10px 12px; border-radius:10px; background:#F0F4F8; font:500 15px/1.4 ui-monospace,Menlo,monospace; color:var(--sink); }
+  .s-card ul { margin:12px 0 0; padding-left:20px; color:var(--soft); font-size:15px; line-height:1.5; }
+  .s-card ul[hidden] { display:none; }
+  .s-more { margin-top:12px; border:0; background:none; color:var(--teal); font-weight:600; font-size:14px; padding:0; cursor:pointer; }
+  .s-empty { color:var(--soft); }
+  .s-fact { margin-top:28px; padding:26px 28px; border-radius:22px; background:var(--sink); color:#fff; display:grid; grid-template-columns:auto 1fr auto; gap:22px; align-items:center; }
+  .s-fact b { font:800 34px/1 "Fraunces", Georgia, serif; color:var(--lime); }
+  .s-fact p { margin:0; font-size:18px; line-height:1.5; color:#D8E6F0; }
+  .s-ghost { border:1px solid rgba(255,255,255,.3); background:none; color:#fff; border-radius:999px; padding:8px 14px; cursor:pointer; white-space:nowrap; }
+  /* periodic table */
+  .pt-wrap { overflow-x:auto; padding-bottom:6px; }
+  .pt { display:grid; grid-template-columns:repeat(18,minmax(44px,1fr)); gap:3px; min-width:820px; }
+  .pt button { aspect-ratio:1; border:0; border-radius:6px; padding:2px; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#0F2A3D; line-height:1; }
+  .pt button small { font-size:9px; opacity:.7; } .pt button b { font-size:16px; }
+  .pt button:hover, .pt button.on { outline:3px solid var(--sink); outline-offset:-1px; }
+  .pt .gap { grid-column:1/-1; height:10px; }
+  .pt-info { margin-top:14px; padding:16px 18px; border-radius:14px; background:#fff; border:1px solid var(--rule); display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  .pt-info b { font:800 22px/1 "Fraunces", Georgia, serif; } .pt-info span { color:var(--soft); }
+  .pt-key { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:12px; font-size:13px; color:var(--soft); }
+  .pt-key i { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
+  /* calculators */
+  .calc .row { display:grid; grid-template-columns:1fr; gap:8px; margin-top:12px; }
+  .s-cards > * { min-width:0; } .calc input { width:100%; } .calc label span { flex:none; } .calc label em { flex:none; }
+  .calc label, .conv label { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--soft); }
+  .calc label span { width:104px; } .calc label em { font-style:normal; width:44px; color:#7A8C9B; }
+  .calc input, .conv input, .s-filter { flex:1; min-width:0; border:1px solid var(--rule); border-radius:10px; padding:9px 11px; font:inherit; font-size:16px; color:var(--sink); background:#FBFCFE; }
+  .calc .go { margin-top:12px; border:0; background:var(--teal); color:#fff; border-radius:10px; padding:10px 14px; font-weight:600; cursor:pointer; }
+  .calc .out { margin-top:10px; font-weight:600; min-height:1.4em; }
+  .s-conv { margin-top:18px; } .conv { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
+  .s-small { font-size:13px!important; margin-top:10px!important; }
+  /* constants */
+  .s-tablewrap { overflow-x:auto; background:#fff; border:1px solid var(--rule); border-radius:18px; }
+  .s-table { width:100%; border-collapse:collapse; font-size:15px; }
+  .s-table th, .s-table td { text-align:left; padding:12px 16px; border-bottom:1px solid var(--rule); }
+  .s-table tr:last-child td { border-bottom:0; } .s-table th { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7A8C9B; }
+  .s-table td:nth-child(3) { font-family:ui-monospace,Menlo,monospace; white-space:nowrap; }
+  .s-table .tag { font-size:12px; padding:3px 8px; border-radius:999px; background:#EEF3F7; color:var(--soft); }
+  /* quiz */
+  .quiz { max-width:680px; }
+  .quiz .q { font:800 22px/1.25 "Fraunces", Georgia, serif; margin:6px 0 14px; }
+  .quiz .opts { display:grid; gap:8px; }
+  .quiz .opts button { text-align:left; border:1px solid var(--rule); background:#FBFCFE; border-radius:12px; padding:12px 14px; font-size:16px; cursor:pointer; color:var(--sink); }
+  .quiz .opts button.right { background:#E4F6E5; border-color:#62B567; } .quiz .opts button.wrong { background:#FDE8E4; border-color:#E4572E; }
+  .quiz .why { margin-top:12px; color:var(--soft); min-height:1.4em; }
+  .quiz .bar { height:6px; background:#EEF3F7; border-radius:3px; overflow:hidden; } .quiz .bar i { display:block; height:100%; background:var(--teal); }
+  .quiz .next { margin-top:14px; border:0; background:var(--sink); color:#fff; border-radius:10px; padding:10px 16px; font-weight:600; cursor:pointer; }
+  /* glossary */
+  .s-filter { width:100%; max-width:360px; margin-bottom:16px; }
+  .gloss { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:10px 24px; margin:0; }
+  .gloss div { padding:12px 0; border-bottom:1px solid var(--rule); }
+  .gloss dt { font-weight:700; } .gloss dd { margin:4px 0 0; color:var(--soft); font-size:15px; line-height:1.45; }
+  .s-foot { max-width:1080px; margin:0 auto; padding:28px 24px 48px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; color:#6A7F90; font-size:14px; }
+  .lab-btn { font:500 14px "Rubik", sans-serif; cursor:pointer; border:1px solid var(--rule); background:#fff; color:#6A7F90; border-radius:999px; padding:6px 14px; }
+  .lab-btn:hover { color:var(--sink); border-color:#B9C6D4; }
+  .back-notes { position:absolute; top:14px; left:14px; }
+  @media (max-width:760px){ .s-top .in{padding:10px 16px} .s-brand{font-size:20px} .s-nav button{font-size:14px;padding:8px 7px} .s-hero{grid-template-columns:1fr;padding:32px 16px 10px;gap:20px} .s-atom{display:none} .s-main{padding:8px 16px 32px} .s-fact{grid-template-columns:1fr;gap:12px} .s-cards{grid-template-columns:1fr} .conv{grid-template-columns:1fr} .back-notes{position:static;margin-bottom:12px} .s-foot{padding:24px 16px 40px} .s-sec{margin-top:44px} }
+  @media (max-width:560px){ .s-top .in{flex-direction:column;align-items:flex-start;gap:6px} .s-nav{width:100%} .s-sec{scroll-margin-top:104px} }
+  @media (prefers-reduced-motion: reduce){ .s-atom .orb{animation:none} }
+
+  /* header */
+  .head { position: relative; text-align: center; padding: 64px 20px 8px; }
+  .pills { position: absolute; top: 14px; right: 14px; display: flex; gap: 8px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none; background: #fff;
+    border: 2px solid var(--line); border-radius: 12px; padding: 7px 14px; font-weight: 500;
+  }
+  .pill:hover, .pill:focus-visible { border-color: var(--ink); outline: none; }
+  .logo { margin: 0; font-family: "Permanent Marker", cursive; line-height: 0.95; font-weight: 400; }
+  .logo .top { display: block; font-size: clamp(22px, 4.2vw, 40px); letter-spacing: 0.02em; }
+  .logo .main { display: inline-flex; align-items: center; gap: 0.12em; font-size: clamp(64px, 14vw, 140px); }
+  .logo .joy { font-size: 0.55em; display: inline-block; transform: rotate(10deg); }
+  .tagline { margin: 10px 0 0; font-size: 1.25em; color: #333; }
+
+  /* controls */
+  .bar {
+    position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border-bottom: 2px solid var(--line);
+  }
+  .bar-in { max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .search {
+    flex: 1 1 220px; max-width: 360px; font: inherit; padding: 9px 14px;
+    border: 2.5px solid var(--ink); border-radius: 999px; background: #fff; color: var(--ink);
+  }
+  .search:focus { outline: 3px solid #2563c9; outline-offset: 2px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; }
+  .chip {
+    flex: none; font: 500 0.95em "Rubik", sans-serif; cursor: pointer; white-space: nowrap;
+    border: 2.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; background: #fff; color: var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .chip:hover { background: #f3f3f3; }
+  .chip:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .chip:focus-visible { outline: 3px solid #2563c9; outline-offset: 3px; }
+
+  /* sections */
+  main { max-width: 1240px; margin: 0 auto; padding: 10px 24px 40px; }
+  .sec { margin-top: 44px; }
+  .sec-h { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; }
+  .sec-h h2 {
+    margin: 0; font: 400 clamp(26px, 3.4vw, 36px) "Permanent Marker", cursive;
+    background: var(--c); color: var(--ci); padding: 2px 16px 4px; border: 3px solid var(--ink);
+    border-radius: 12px; transform: rotate(-1.5deg);
+  }
+  .sec-h .count { color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px; }
+  .card {
+    display: flex; flex-direction: column; text-decoration: none; color: var(--ink);
+    border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: #fff;
+    box-shadow: 0 5px 0 var(--ink); transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 9px 0 var(--ink); }
+  .card:nth-child(even):hover { transform: translateY(-4px) rotate(1deg); }
+  .card:focus-visible { outline: 3px solid #2563c9; outline-offset: 4px; }
+  .card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #eee; border-bottom: 3px solid var(--ink); }
+  .card span { padding: 8px 10px 10px; font-weight: 700; font-size: 0.95em; line-height: 1.2; background: var(--c); color: var(--ci); flex: 1; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 1.15em; }
+
+  footer { max-width: 1240px; margin: 0 auto; padding: 30px 24px 50px; color: var(--muted); text-align: center; border-top: 2px solid var(--line); }
+  footer p { margin: 6px 0; }
+
+  /* player */
+  .player { position: fixed; inset: 0; z-index: 20; background: #111; display: flex; flex-direction: column; }
+  .p-bar {
+    display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff;
+    border-bottom: 3px solid var(--ink); flex-wrap: wrap;
+  }
+  .p-title { flex: 1; min-width: 0; margin: 0; font: 400 clamp(20px, 3vw, 30px) "Permanent Marker", cursive; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .btn {
+    font: 500 0.95em "Rubik", sans-serif; cursor: pointer; text-decoration: none; white-space: nowrap;
+    border: 2.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; background: #fff; color: var(--ink);
+    box-shadow: 0 3px 0 var(--ink); display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { background: #f3f3f3; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .btn:focus-visible { outline: 3px solid #2563c9; outline-offset: 3px; }
+  .p-stage { position: relative; flex: 1; }
+  .p-stage .loading { position: absolute; inset: 0; display: grid; place-items: center; color: #aaa; font-size: 1.2em; }
+  .p-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+
+  @media (max-width: 640px) {
+    .pills { position: static; justify-content: center; margin-bottom: 18px; }
+    .head { padding-top: 18px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 16px; }
+    .bar-in, main { padding-left: 16px; padding-right: 16px; }
+    .p-bar .hide-sm { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+    .card:hover, .card:nth-child(even):hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="sci" id="sci">
+  <header class="s-top"><div class="in">
+    <a class="s-brand" href="#" data-go="top"><i>⚛</i>Science Notes</a>
+    <nav class="s-nav" aria-label="Sections">
+      <button data-go="notes">Notes</button><button data-go="table">Periodic table</button><button data-go="tools">Calculators</button><button data-go="quiz">Quiz</button><button data-go="glossary">Glossary</button>
+    </nav>
+  </div></header>
+  <section class="s-hero" id="top">
+    <div>
+      <p class="s-kicker">Revision notes · KS3 &amp; GCSE level</p>
+      <h1>Science, explained in five minutes or less.</h1>
+      <p>Short, clear notes on the big ideas in biology, chemistry, physics, the human body, Earth and space, with the key equations and nothing you don’t need.</p>
+      <label class="s-search"><span aria-hidden="true">🔎</span><input id="sSearch" type="search" placeholder="Search notes, e.g. enzymes, waves, pH" autocomplete="off"></label>
+      <div class="s-stats" id="sStats"></div>
+    </div>
+    <div class="s-atom" aria-hidden="true"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="nuc"></div></div>
+  </section>
+  <main class="s-main">
+    <div class="s-fact"><b>Did you know?</b><p id="sFact"></p><button class="s-ghost" id="sFactNext" type="button">Another fact →</button></div>
+
+    <section class="s-sec" id="notes">
+      <h2>Notes <span id="sNoteCount"></span></h2>
+      <div class="s-tabs" id="sTabs" role="tablist"></div>
+      <div class="s-cards" id="sCards"></div>
+      <p class="s-empty" id="sEmpty" hidden>No notes match that search.</p>
+    </section>
+
+    <section class="s-sec" id="table">
+      <h2>Periodic table <span>118 elements</span></h2>
+      <p class="s-lead">Tap an element to see its details. Colours show the element family.</p>
+      <div class="pt-wrap"><div class="pt" id="pt"></div></div>
+      <div class="pt-info" id="ptInfo"><b>Pick an element</b><span>Its atomic number, symbol and family will show here.</span></div>
+      <div class="pt-key" id="ptKey"></div>
+    </section>
+
+    <section class="s-sec" id="tools">
+      <h2>Calculators <span>Fill in two, get the third</span></h2>
+      <div class="s-cards" id="sCalcs"></div>
+      <div class="s-card s-conv">
+        <h3>Temperature converter</h3>
+        <div class="conv"><label>°C<input id="tC" type="number" step="any" value="20"></label><label>°F<input id="tF" type="number" step="any"></label><label>K<input id="tK" type="number" step="any"></label></div>
+        <p class="s-small">K = °C + 273.15 · °F = °C × 9/5 + 32</p>
+      </div>
+    </section>
+
+    <section class="s-sec" id="constants">
+      <h2>Constants <span>SI units</span></h2>
+      <div class="s-tablewrap"><table class="s-table"><thead><tr><th>Quantity</th><th>Symbol</th><th>Value</th><th></th></tr></thead><tbody id="sConst"></tbody></table></div>
+    </section>
+
+    <section class="s-sec" id="quiz">
+      <h2>Quick quiz <span id="qBest"></span></h2>
+      <div class="s-card quiz" id="qBox"></div>
+    </section>
+
+    <section class="s-sec" id="glossary">
+      <h2>Glossary <span id="gCount"></span></h2>
+      <input class="s-filter" id="gFilter" type="search" placeholder="Filter terms" autocomplete="off">
+      <dl class="gloss" id="gList"></dl>
+    </section>
+  </main>
+  <footer class="s-foot"><span>Science Notes · made by Rayan</span><button class="lab-btn" id="labBtn" type="button">🧪 Open the lab</button></footer>
+</div>
+
+<div id="home" hidden>
+  <header class="head">
+    <button class="btn back-notes" id="backNotes" type="button">← back to notes</button>
+    <nav class="pills" aria-label="My other sites">
+      <a class="pill" href="https://links.rayanupadhyay.com">🔗 links</a>
+      <a class="pill" href="https://tools.rayanupadhyay.com">🧰 tools</a>
+    </nav>
+    <h1 class="logo"><span class="top">Rayan Upadhyay's</span><span class="main">GAMES<span class="joy" aria-hidden="true">🕹️</span></span></h1>
+    <p class="tagline" id="tagline">free games, no downloads. just click and play.</p>
+  </header>
+
+  <div class="bar">
+    <div class="bar-in">
+      <input class="search" id="search" type="search" placeholder="Search games..." aria-label="Search games" autocomplete="off">
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+    </div>
+  </div>
+
+  <main id="list"></main>
+
+  <footer>
+    <p>Made by Rayan. Game collection from <a href="https://github.com/Gams-Offline/Gams" target="_blank" rel="noopener">Gams</a> by mountain658. Flash games run on <a href="https://ruffle.rs" target="_blank" rel="noopener">Ruffle</a>.</p>
+    <p>All games belong to their original creators.</p>
+  </footer>
+</div>
+
+<div class="player" id="player" hidden>
+  <div class="p-bar">
+    <a class="btn" href="#lab" id="pBack">← all games</a>
+    <h2 class="p-title" id="pTitle"></h2>
+    <button class="btn" id="pFull" type="button">⛶ <span class="hide-sm">fullscreen</span></button>
+    <a class="btn hide-sm" id="pNew" href="#" target="_blank" rel="noopener">↗ new tab</a>
+  </div>
+  <div class="p-stage">
+    <div class="loading">loading...</div>
+    <iframe id="pFrame" title="Game" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+const LIST = [{"section": "Basic"}, {"name": "Stickman Hook", "href": "g/stickmanhook.html", "img": "img/stickmanhook.png"}, {"name": "Drive Mad", "href": "g/g/drivemad/drivemad.html", "img": "img/drivemad.png"}, {"name": "2048", "href": "g/2048.html", "img": "img/2048.png"}, {"name": "Cookie Clicker", "href": "g/g/cookie/index.html", "img": "img/cookieclicker.png"}, {"name": "Cube Field", "href": "g/g/cubefield/index.html", "img": "img/cubefield.png"}, {"name": "Spacebar Clicker", "href": "g/spacebarclicker.html", "img": "img/spacebarclicker.png"}, {"name": "Offline Paradise", "href": "g/offlineparadise.html", "img": "img/offlineparadise.png"}, {"name": "Sand Game", "href": "g/sandgame.html", "img": "img/sandgame.png"}, {"name": "Agario Lite", "href": "g/agariolite.html", "img": "img/agariolite.png"}, {"name": "Evil Glitch", "href": "g/evilglitch.html", "img": "img/evilglitch.png"}, {"name": "Its Raining Boxes", "href": "g/itsrainingboxes.html", "img": "img/itsrainingboxes.png"}, {"name": "T Rex", "href": "g/trex.html", "img": "img/trex.png"}, {"name": "Stack", "href": "g/stack.html", "img": "img/stack.png"}, {"name": "Rolling Forests", "href": "g/rollingforests.html", "img": "img/rollingforests.png"}, {"name": "Radius Raid", "href": "g/radiusraid.html", "img": "img/radiusraid.png"}, {"name": "Mountain Maze", "href": "g/mountainmaze.html", "img": "img/mountainmaze.png"}, {"name": "Fluid Simulator", "href": "g/fluidsimulator.html", "img": "img/fluidsimulator.png"}, {"name": "Edge Not Found", "href": "g/edgenotfound.html", "img": "img/edgenotfound.png"}, {"name": "Ninja vs EVILCORP", "href": "g/ninjavsevilcorp.html", "img": "img/ninjavsevilcorp.png"}, {"name": "Geometry Dash", "href": "g/geometrydash.html", "img": "img/geometrydash.png"}, {"name": "Wordle", "href": "g/wordle.html", "img": "img/wordle.png"}, {"name": "Paper IO 2", "href": "g/paperio2.html", "img": "img/paperio2.png"}, {"section": "Unity"}, {"name": "Slope", "href": "g/slope.html", "img": "img/slope.png"}, {"name": "Burrito Bison", "href": "g/g/burritobison/burritobison.html", "img": "img/burritobison.png"}, {"name": "Tube Jumpers", "href": "g/tubejumpers.html", "img": "img/tubejumpers.png"}, {"name": "Hole IO", "href": "g/holeio.html", "img": "img/holeio.png"}, {"name": "Madalin Stunt Cars", "href": "g/g/madalinstuntcars/madalinstuntcars.html", "img": "img/madalinstuntcars.png"}, {"name": "Glass City", "href": "g/g/glasscity/glasscity.html", "img": "img/glasscity.png"}, {"name": "Tunnel Rush", "href": "g/g/tunnelrush/tunnelrush.html", "img": "img/tunnelrush.png"}, {"name": "Tanuki Sunset", "href": "g/g/tanukisunset/tanukisunset.html", "img": "img/tanukisunset.png"}, {"name": "A Dance of Fire and Ice", "href": "g/g/fireice/index.html", "img": "img/adanceoffireandice.png"}, {"name": "Game Inside a Game", "href": "g/g/gameinsideagame/index.html", "img": "img/gameinsideagame.png"}, {"name": "Cell Machine", "href": "g/g/cellmachine/index.html", "img": "img/cellmachine.png"}, {"name": "Slope 2", "href": "g/g/slope2/index.html", "img": "img/slope2.png"}, {"name": "Ai Creatures", "href": "g/g/aicreatures/index.html", "img": "img/aicreatures.png"}, {"name": "Grey Box Testing", "href": "g/g/greybox/index.html", "img": "img/greyboxtesting.png"}, {"section": "Retrogaming"}, {"name": "Celeste", "href": "g/celeste.html", "img": "img/celeste.png"}, {"name": "Just One Boss", "href": "g/justoneboss.html", "img": "img/justoneboss.png"}, {"section": "Henry Stickmin Flash"}, {"name": "Breaking The Bank", "href": "g/breakingthebank.html", "img": "img/breakingthebank.png"}, {"name": "Escaping The Prison", "href": "g/escapingtheprison.html", "img": "img/escapingtheprison.png"}, {"name": "Stealing The Diamond", "href": "g/stealingthediamond.html", "img": "img/stealingthediamond.png"}, {"name": "Infiltrating The Airship", "href": "g/infiltratingtheairship.html", "img": "img/infiltratingtheairship.png"}, {"name": "Fleeing The Complex", "href": "g/fleeingthecomplex.html", "img": "img/fleeingthecomplex.png"}, {"section": "Flash"}, {"name": "Bloxorz", "href": "g/bloxorz.html", "img": "img/bloxorz.png"}, {"name": "Tetris", "href": "g/tetris.html", "img": "img/tetris.png"}, {"name": "Flood Runner 4", "href": "g/floodrunner4.html", "img": "img/floodrunner4.png"}, {"name": "Raft Wars", "href": "g/raftwars.html", "img": "img/raftwars.png"}, {"name": "Raft Wars 2", "href": "g/raftwars2.html", "img": "img/raftwars2.png"}, {"name": "Worlds Hardest Game", "href": "g/worldshardestgame.html", "img": "img/worldshardestgame.png"}, {"name": "The Impossible Quiz", "href": "g/theimpossiblequiz.html", "img": "img/theimpossiblequiz.png"}, {"name": "Learn To Fly Idle", "href": "g/learntoflyidle.html", "img": "img/learntoflyidle.png"}, {"name": "Learn To Fly 1", "href": "g/learntofly1.html", "img": "img/learntofly1.png"}, {"name": "Learn To Fly 2", "href": "g/learntofly2.html", "img": "img/learntofly2.png"}, {"name": "Learn To Fly 3", "href": "g/learntofly3.html", "img": "img/learntofly3.png"}, {"name": "Bloons Tower Defense 1", "href": "g/bloonstowerdefense1.html", "img": "img/bloonstowerdefense1.png"}, {"name": "Bloons Tower Defense 2", "href": "g/bloonstowerdefense2.html", "img": "img/bloonstowerdefense2.png"}, {"name": "Bloons Tower Defense 5", "href": "g/bloonstowerdefense5.html", "img": "img/bloonstowerdefense5.png"}, {"name": "Cat Ninja", "href": "g/catninja.html", "img": "img/catninja.png"}, {"name": "Pacman", "href": "g/pacman.html", "img": "img/pacman.png"}, {"name": "1 on 1 Soccer", "href": "g/1on1soccer.html", "img": "img/1on1soccer.png"}, {"name": "QWOP", "href": "g/qwop.html", "img": "img/qwop.png"}, {"name": "Use Boxmen", "href": "g/useboxmen.html", "img": "img/useboxmen.png"}, {"name": "40x Escape", "href": "g/40xescape.html", "img": "img/40xescape.png"}, {"name": "Stickman Life", "href": "g/stickmanlife.html", "img": "img/stickmanlife.png"}, {"name": "Duck Life 1", "href": "g/ducklife1.html", "img": "img/ducklife1.png"}, {"name": "Duck Life 2", "href": "g/ducklife2.html", "img": "img/ducklife2.png"}, {"name": "Duck Life 3", "href": "g/ducklife3.html", "img": "img/ducklife3.png"}, {"name": "Duck Life 4", "href": "g/ducklife4.html", "img": "img/ducklife4.png"}, {"name": "Duck Life 5", "href": "g/ducklife5.html", "img": "img/ducklife5.png"}, {"section": "Tools"}, {"name": "Ruffle Flash Player", "href": "g/g/Ruffle/Ruffle.html", "img": "img/ruffleflashplayer.png"}, {"name": "Code Editor", "href": "g/codeeditor.html", "img": "img/codeeditor.png", "type": "raw"}];
+
+const SECTIONS = {
+  "Basic":                { label: "Arcade",          c: "#ffd95a", ci: "#1a1a1a" },
+  "Unity":                { label: "3D Games",        c: "#2563c9", ci: "#fff" },
+  "Retrogaming":          { label: "Pixel Games",     c: "#e8443a", ci: "#fff" },
+  "Henry Stickmin Flash": { label: "Henry Stickmin",  c: "#1f7a4a", ci: "#fff" },
+  "Flash":                { label: "Flash Classics",  c: "#f59e0b", ci: "#1a1a1a" },
+  "Tools":                { label: "Extras",          c: "#e6e8ee", ci: "#1a1a1a" }
+};
+
+/* build game objects */
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const games = [];
+let sec = "";
+LIST.forEach(item => {
+  if (item.section) { sec = item.section; return; }
+  games.push({ ...item, id: slug(item.name), sec });
+});
+const byId = Object.fromEntries(games.map(g => [g.id, g]));
+const realCount = games.filter(g => g.sec !== "Tools").length;
+document.getElementById("tagline").textContent = `${realCount} free games, no downloads. just click and play.`;
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("rayan-games:" + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("rayan-games:" + k, JSON.stringify(v)); } catch {} }
+};
+
+/* filters */
+let filter = "all";
+const chips = document.getElementById("chips");
+const chipDefs = [["all", "All"], ["recent", "Recently played"], ...Object.entries(SECTIONS).map(([k, v]) => [k, v.label])];
+chipDefs.forEach(([key, label]) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.dataset.key = key; b.textContent = label;
+  b.addEventListener("click", () => { filter = key; render(); });
+  chips.appendChild(b);
+});
+
+function card(g) {
+  const s = SECTIONS[g.sec] || SECTIONS.Tools;
+  const a = document.createElement("a");
+  a.className = "card";
+  a.href = "#" + g.id;
+  a.style.setProperty("--c", s.c);
+  a.style.setProperty("--ci", s.ci);
+  if (g.type === "raw") { a.href = g.href; a.target = "_blank"; a.rel = "noopener"; }
+  const img = document.createElement("img");
+  img.src = g.img; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+  const name = document.createElement("span");
+  name.textContent = g.name;
+  a.append(img, name);
+  return a;
+}
+
+function section(title, list, colors) {
+  const wrap = document.createElement("section");
+  wrap.className = "sec";
+  wrap.style.setProperty("--c", colors.c);
+  wrap.style.setProperty("--ci", colors.ci);
+  const h = document.createElement("div"); h.className = "sec-h";
+  const h2 = document.createElement("h2"); h2.textContent = title;
+  const n = document.createElement("span"); n.className = "count"; n.textContent = list.length === 1 ? "1 game" : `${list.length} games`;
+  h.append(h2, n);
+  const grid = document.createElement("div"); grid.className = "grid";
+  list.forEach(g => grid.appendChild(card(g)));
+  wrap.append(h, grid);
+  return wrap;
+}
+
+function render() {
+  chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.key === filter ? "true" : "false"));
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const out = document.getElementById("list");
+  out.textContent = "";
+  const match = g => !q || g.name.toLowerCase().includes(q);
+  const recent = store.get("recent", []).map(id => byId[id]).filter(Boolean);
+
+  if (filter === "recent") {
+    const list = recent.filter(match);
+    if (list.length) out.appendChild(section("Recently played", list, { c: "#ffd6e8", ci: "#1a1a1a" }));
+    else out.innerHTML = '<p class="empty">Nothing here yet. Play something and it\u2019ll show up here.</p>';
+    return;
+  }
+  if (filter === "all" && !q && recent.length) {
+    out.appendChild(section("Recently played", recent.slice(0, 6), { c: "#ffd6e8", ci: "#1a1a1a" }));
+  }
+  let shown = 0;
+  Object.entries(SECTIONS).forEach(([key, s]) => {
+    if (filter !== "all" && filter !== key) return;
+    const list = games.filter(g => g.sec === key && match(g));
+    if (!list.length) return;
+    shown += list.length;
+    out.appendChild(section(s.label, list, s));
+  });
+  if (!shown) {
+    const p = document.createElement("p"); p.className = "empty";
+    p.textContent = `No games match \u201c${q}\u201d. Try a different word.`;
+    out.appendChild(p);
+  }
+}
+document.getElementById("search").addEventListener("input", render);
+
+/* player */
+const player = document.getElementById("player");
+const frame = document.getElementById("pFrame");
+let homeScroll = 0;
+function route() {
+  const g = byId[location.hash.slice(1)];
+  if (g && g.type !== "raw") {
+    if (player.hidden) homeScroll = window.scrollY;
+    document.getElementById("pTitle").textContent = g.name;
+    document.getElementById("pNew").href = g.href;
+    if (frame.getAttribute("src") !== g.href) frame.src = g.href;
+    player.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.title = "Science Notes";
+    const recent = [g.id, ...store.get("recent", []).filter(id => id !== g.id)].slice(0, 12);
+    store.set("recent", recent);
+    setTimeout(() => frame.focus(), 300);
+  } else {
+    if (!player.hidden) {
+      player.hidden = true;
+      frame.removeAttribute("src");
+      document.body.style.overflow = "";
+      document.title = "Science Notes";
+      render();
+      requestAnimationFrame(() => window.scrollTo(0, homeScroll));
+    }
+    showLab(location.hash === "#lab");
+  }
+}
+document.getElementById("pFull").addEventListener("click", () => {
+  const el = frame;
+  if (document.fullscreenElement) document.exitFullscreen();
+  else if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+});
+window.addEventListener("hashchange", route);
+
+/* the notes are the front page; the games sit behind the lab button (#lab), and game links (#slope) still open directly */
+function showLab(on) {
+  document.getElementById("sci").hidden = on;
+  document.getElementById("home").hidden = !on;
+}
+document.getElementById("labBtn").addEventListener("click", () => { location.hash = "lab"; window.scrollTo(0, 0); });
+document.getElementById("backNotes").addEventListener("click", () => { history.pushState("", document.title, location.pathname + location.search); showLab(false); window.scrollTo(0, 0); });
+
+render();
+route();
+</script>
+<script>
+/* ===== Science Notes content ===== */
+const SUBJECTS = [
+  { k: "bio", name: "Biology", tag: "Life", ico: "🧬" },
+  { k: "chem", name: "Chemistry", tag: "Matter", ico: "⚗️" },
+  { k: "phys", name: "Physics", tag: "Forces & energy", ico: "🧲" },
+  { k: "body", name: "Human body", tag: "Systems", ico: "🫀" },
+  { k: "earth", name: "Earth science", tag: "Our planet", ico: "🌋" },
+  { k: "space", name: "Space", tag: "The universe", ico: "🪐" }
+];
+// [subject, title, summary, [key points], equation?]
+const NOTES = [
+  ["bio", "Cells", "Every living thing is made of cells, the smallest unit of life. Animal and plant cells are eukaryotic (they have a nucleus); bacteria are prokaryotic (no nucleus).", ["The nucleus holds the DNA and controls the cell.", "Mitochondria release energy through respiration; ribosomes make proteins.", "Plant cells also have a cell wall, chloroplasts and a large permanent vacuole."]],
+  ["bio", "Photosynthesis", "Plants use light energy to turn carbon dioxide and water into glucose, releasing oxygen. It happens in the chloroplasts, using the green pigment chlorophyll.", ["It is endothermic: energy is taken in from light.", "Rate is limited by light intensity, CO₂ concentration and temperature.", "Glucose is used for respiration, or stored as starch."], "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂"],
+  ["bio", "Respiration", "Cells release energy from glucose. Aerobic respiration uses oxygen and happens mostly in the mitochondria; anaerobic respiration doesn’t need oxygen but releases much less energy.", ["Aerobic respiration releases far more energy per glucose than anaerobic.", "In muscles, anaerobic respiration makes lactic acid.", "In yeast, it makes ethanol and CO₂ (fermentation)."], "C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O"],
+  ["bio", "DNA and genes", "DNA is a double helix of two strands joined by base pairs: adenine with thymine, cytosine with guanine. A gene is a section of DNA that codes for a protein.", ["Each group of three bases codes for one amino acid.", "Humans have 23 pairs of chromosomes.", "A mutation is a change in the base sequence."], "A–T · C–G"],
+  ["bio", "Mitosis and meiosis", "Mitosis makes two genetically identical cells for growth and repair. Meiosis makes four genetically different gametes (sex cells), each with half the chromosomes.", ["Mitosis: 1 division, 2 diploid cells.", "Meiosis: 2 divisions, 4 haploid cells.", "Fertilisation restores the full chromosome number."]],
+  ["bio", "Natural selection", "Individuals vary. Those with traits better suited to their environment are more likely to survive and reproduce, so those traits become more common over generations.", ["Proposed by Charles Darwin and Alfred Russel Wallace.", "Antibiotic-resistant bacteria are evolution you can watch.", "Variation comes from mutations and sexual reproduction."]],
+  ["bio", "Enzymes", "Enzymes are proteins that speed up reactions without being used up. Each has an active site shaped to fit one substrate, the lock-and-key model.", ["High temperatures and extreme pH denature enzymes.", "Amylase breaks starch into sugars; protease breaks proteins; lipase breaks fats.", "Each enzyme has an optimum temperature and pH."]],
+  ["bio", "Food chains", "Energy flows from producers (plants) to primary, secondary and tertiary consumers. Only around 10% of the energy passes on to each level.", ["Energy is lost as heat, movement and waste.", "That’s why food chains rarely have more than 4–5 links.", "Decomposers recycle nutrients back into the soil."]],
+
+  ["chem", "Atomic structure", "An atom has a tiny nucleus of protons and neutrons, surrounded by electrons in shells. The number of protons (the atomic number) decides which element it is.", ["Proton: charge +1, mass 1. Neutron: charge 0, mass 1. Electron: charge −1, almost no mass.", "Isotopes have the same protons but different numbers of neutrons.", "Atoms are neutral: protons = electrons."]],
+  ["chem", "The periodic table", "Elements are arranged by atomic number. Columns (groups) share the same number of outer electrons, so they react in similar ways; rows are periods.", ["Group 1: alkali metals, more reactive going down.", "Group 7: halogens, less reactive going down.", "Group 0: noble gases, full outer shells and unreactive."]],
+  ["chem", "Bonding", "Ionic bonds form when electrons transfer from a metal to a non-metal. Covalent bonds form when non-metals share pairs of electrons. Metallic bonds are a lattice of ions in a sea of electrons.", ["Ionic compounds have high melting points and conduct when molten or dissolved.", "Simple covalent molecules have low melting points.", "Delocalised electrons let metals conduct electricity."]],
+  ["chem", "The pH scale", "pH measures how acidic or alkaline a solution is, usually from 0 to 14. Pure water is neutral at 7, and each step down is ten times more acidic.", ["Acids release H⁺ ions; alkalis release OH⁻ ions.", "Acid + alkali → salt + water (neutralisation).", "Universal indicator turns red in acid, green at 7, purple in alkali."], "pH = −log₁₀[H⁺]"],
+  ["chem", "Rates of reaction", "Reactions go faster when particles collide more often and with more energy. Temperature, concentration, surface area and catalysts all raise the rate.", ["Collision theory: particles must collide with at least the activation energy.", "A catalyst lowers the activation energy and isn’t used up.", "Powder reacts faster than lumps: more surface area."]],
+  ["chem", "Conservation of mass", "In a chemical reaction atoms are rearranged, never created or destroyed, so the total mass of the products equals the total mass of the reactants.", ["Balance equations so each side has the same number of each atom.", "If a gas escapes, an open container seems to lose mass.", "Moles link mass to number of particles."], "2H₂ + O₂ → 2H₂O"],
+  ["chem", "Moles", "A mole is 6.022 140 76 × 10²³ particles, the Avogadro constant. The mass of one mole of a substance in grams equals its relative formula mass.", ["Moles = mass ÷ Mᵣ.", "One mole of any gas takes up about 24 dm³ at room temperature and pressure.", "Concentration (mol/dm³) = moles ÷ volume."], "n = m ÷ Mᵣ"],
+  ["chem", "Ideal gas law", "Links the pressure, volume and temperature of a gas. Heat a sealed container and the pressure rises; squeeze a gas and its pressure rises.", ["Temperature must be in kelvin: K = °C + 273.15.", "R = 8.314 J mol⁻¹ K⁻¹.", "Real gases behave most ideally at high temperature and low pressure."], "PV = nRT"],
+
+  ["phys", "Newton’s laws", "1: an object stays at rest or moves at constant velocity unless a resultant force acts. 2: force equals mass times acceleration. 3: every action has an equal and opposite reaction.", ["Weight = mass × gravitational field strength (9.8 N/kg on Earth).", "Inertia is the tendency to keep doing what you’re doing.", "Third-law pairs act on different objects."], "F = ma"],
+  ["phys", "Speed and acceleration", "Speed is distance over time. Velocity is speed in a given direction. Acceleration is the rate of change of velocity.", ["On a distance–time graph, the gradient is speed.", "On a velocity–time graph, the gradient is acceleration and the area is distance.", "Free fall near Earth: about 9.8 m/s²."], "v = d ÷ t   a = Δv ÷ t"],
+  ["phys", "Energy", "Energy is never created or destroyed, only transferred between stores: kinetic, gravitational potential, elastic, thermal, chemical and nuclear.", ["Kinetic energy = ½mv².", "Gravitational PE = mgh.", "Efficiency = useful output ÷ total input."], "Eₖ = ½mv²   Eₚ = mgh"],
+  ["phys", "Electricity", "Current is the flow of charge. Voltage (potential difference) pushes it, and resistance opposes it. In series components share the voltage; in parallel they share the current.", ["Power = current × voltage.", "Resistance of a filament lamp rises as it heats up.", "UK mains electricity is 230 V at 50 Hz."], "V = IR   P = IV"],
+  ["phys", "Waves", "Waves transfer energy without transferring matter. Transverse waves (light, water) oscillate at right angles to their direction; longitudinal waves (sound) oscillate along it.", ["Wave speed = frequency × wavelength.", "Sound needs a medium; light can travel through a vacuum.", "Sound travels at about 343 m/s in air at 20 °C."], "v = fλ"],
+  ["phys", "The electromagnetic spectrum", "Radio, microwaves, infrared, visible light, ultraviolet, X-rays and gamma rays are all electromagnetic waves, travelling at the speed of light in a vacuum.", ["Going from radio to gamma, wavelength falls and frequency and energy rise.", "Visible light runs from roughly 380 nm (violet) to 700 nm (red).", "UV, X-rays and gamma are ionising and can damage cells."]],
+  ["phys", "Density", "Density is mass per unit volume. An object floats in a liquid if its average density is lower than the liquid’s.", ["Water is about 1000 kg/m³ (1 g/cm³).", "Ice is less dense than water, which is why it floats.", "Measure irregular volumes by displacement."], "ρ = m ÷ V"],
+  ["phys", "Mass–energy", "Mass and energy are equivalent. A tiny amount of mass holds an enormous amount of energy, because c² is so large. It powers the Sun and nuclear reactors.", ["Fission splits heavy nuclei like uranium-235.", "Fusion joins light nuclei like hydrogen.", "1 kg of mass is equivalent to about 9 × 10¹⁶ J."], "E = mc²"],
+
+  ["body", "The heart", "The heart is a double pump. The right side pumps blood to the lungs to pick up oxygen; the left side pumps it to the rest of the body.", ["Four chambers: two atria on top, two ventricles below.", "Valves stop blood flowing backwards.", "The left ventricle has the thickest wall: it pumps the furthest."]],
+  ["body", "Blood vessels", "Arteries carry blood away from the heart at high pressure. Veins bring it back at low pressure. Capillaries are one cell thick, so substances can diffuse in and out.", ["Arteries have thick, elastic, muscular walls.", "Veins have valves and a wide lumen.", "Red cells carry oxygen using haemoglobin."]],
+  ["body", "Breathing and gas exchange", "Air passes down the trachea and bronchi into millions of alveoli, tiny air sacs where oxygen diffuses into the blood and carbon dioxide diffuses out.", ["Alveoli have a huge surface area and thin walls.", "The diaphragm contracts and flattens to breathe in.", "Breathing is not the same as respiration."]],
+  ["body", "Digestion", "Food is broken down mechanically (chewing, churning) and chemically (enzymes) into small molecules that can be absorbed into the blood.", ["The stomach uses acid and protease.", "Bile from the liver emulsifies fats.", "The small intestine absorbs nutrients through villi."]],
+  ["body", "The nervous system", "Receptors detect a stimulus, sensory neurones carry the signal to the brain or spinal cord, and motor neurones carry a response to effectors (muscles or glands).", ["Reflexes are fast and automatic, skipping the brain.", "Synapses pass signals between neurones using chemicals.", "Signals travel along neurones as electrical impulses."]],
+  ["body", "Immunity", "White blood cells defend the body. Phagocytes engulf pathogens; lymphocytes make antibodies that lock onto specific antigens.", ["Vaccines train the immune system using a harmless form of a pathogen.", "Memory cells give a faster response next time.", "Antibiotics kill bacteria but not viruses."]],
+
+  ["earth", "Earth’s structure", "Earth has a thin rocky crust, a hot mantle, a liquid outer core and a solid inner core. The core is mostly iron and nickel.", ["The crust and upper mantle form the lithosphere.", "Earth is about 4.5 billion years old.", "The inner core is solid because of the enormous pressure."]],
+  ["earth", "Plate tectonics", "The lithosphere is broken into plates that move a few centimetres a year, driven by convection in the mantle. Most earthquakes and volcanoes happen at plate boundaries.", ["Constructive boundaries: plates move apart (Mid-Atlantic Ridge).", "Destructive boundaries: one plate sinks under another.", "Conservative boundaries: plates slide past (San Andreas Fault)."]],
+  ["earth", "The rock cycle", "Igneous rock forms from cooled magma, sedimentary rock from layers of compacted sediment, and metamorphic rock from heat and pressure changing existing rock.", ["Granite and basalt are igneous.", "Limestone and sandstone are sedimentary; fossils are found in them.", "Marble is metamorphosed limestone."]],
+  ["earth", "The water cycle", "Water evaporates from oceans, condenses into clouds, falls as precipitation and returns to the sea through rivers and groundwater.", ["Powered by energy from the Sun.", "Plants add water vapour through transpiration.", "About 97% of Earth’s water is salty seawater."]],
+  ["earth", "The atmosphere", "Dry air is about 78% nitrogen, 21% oxygen and nearly 1% argon, with a small but important amount of carbon dioxide.", ["Layers: troposphere, stratosphere, mesosphere, thermosphere.", "The ozone layer in the stratosphere absorbs UV.", "Weather happens in the troposphere."]],
+  ["earth", "The greenhouse effect", "Greenhouse gases like CO₂, methane and water vapour absorb infrared radiation from Earth’s surface and re-emit it, keeping the planet warmer than it would otherwise be.", ["Without it, Earth would be far too cold for most life.", "Burning fossil fuels has raised CO₂ levels since the industrial revolution.", "More greenhouse gas means more warming: climate change."]],
+
+  ["space", "The Solar System", "Eight planets orbit the Sun: Mercury, Venus, Earth and Mars (rocky), then Jupiter, Saturn, Uranus and Neptune (giants).", ["Jupiter is the largest planet.", "Venus is the hottest, because of its thick CO₂ atmosphere.", "Pluto was reclassified as a dwarf planet in 2006."]],
+  ["space", "Seasons", "Earth’s axis is tilted about 23.4°. As we orbit the Sun, each hemisphere takes turns leaning towards it, which brings summer, not being closer to the Sun.", ["Summer: the Sun is higher, days are longer, rays are more direct.", "Earth is actually closest to the Sun in early January.", "The equator has little seasonal change."]],
+  ["space", "Moon phases", "The Moon doesn’t make light; we see the half lit by the Sun. As it orbits Earth (about every 29.5 days from new moon to new moon), we see different amounts of that lit half.", ["New moon → waxing crescent → first quarter → full moon, then waning.", "The same side of the Moon always faces Earth.", "Tides are mainly caused by the Moon’s gravity."]],
+  ["space", "Life cycle of stars", "Stars form from clouds of gas and dust, then fuse hydrogen into helium. What happens next depends on their mass.", ["Sun-like stars: red giant → white dwarf.", "Massive stars: red supergiant → supernova → neutron star or black hole.", "Elements heavier than iron are made in events like supernovae and neutron star mergers."]],
+  ["space", "The speed of light", "Light in a vacuum travels at exactly 299,792,458 metres per second. Sunlight takes about 8 minutes and 20 seconds to reach Earth.", ["A light-year is the distance light travels in a year: about 9.46 trillion km.", "Looking at distant stars means looking back in time.", "Nothing with mass can reach the speed of light."], "c = 299,792,458 m/s"],
+  ["space", "Why the sky is blue", "Air molecules scatter short (blue) wavelengths of sunlight much more than long (red) ones. That’s Rayleigh scattering, and it’s also why sunsets look red.", ["At sunset, light passes through more air, so more blue is scattered away.", "On the Moon, with no atmosphere, the sky is black.", "Scattering strength goes as 1/λ⁴."]],
+  ["space", "Gravity and orbits", "Every mass attracts every other mass. Gravity provides the centripetal force that keeps planets around the Sun and satellites around Earth.", ["Gravity weakens with the square of distance.", "Astronauts on the ISS float because they are in free fall.", "Higher orbits are slower."], "F = Gm₁m₂ ÷ r²"]
+];
+const FACTS = [
+  "A teaspoon of neutron star would weigh billions of tonnes on Earth, because its matter is packed so tightly.",
+  "Your body has more bacterial cells than you might think: roughly as many as human cells.",
+  "Light from the Sun takes about 8 minutes 20 seconds to reach us, so you always see the Sun as it was in the past.",
+  "Water expands when it freezes, which is why ice floats and pipes can burst in winter.",
+  "If you uncoiled the DNA from one human cell, it would be about 2 metres long.",
+  "Venus spins so slowly that a day there is longer than its year.",
+  "Bananas are slightly radioactive, because they contain potassium-40.",
+  "Sound travels about four times faster in water than in air."
+];
+// [question, [options], index of correct answer, explanation]
+const QUIZ = [
+  ["Which organelle is the site of aerobic respiration?", ["Nucleus", "Mitochondria", "Ribosome", "Cell wall"], 1, "Mitochondria release energy from glucose."],
+  ["What is the chemical symbol for sodium?", ["S", "So", "Na", "Sd"], 2, "Na comes from its Latin name, natrium."],
+  ["A solution with pH 3 is…", ["Strongly alkaline", "Neutral", "Acidic", "Weakly alkaline"], 2, "Below 7 is acidic."],
+  ["Which equation links force, mass and acceleration?", ["F = ma", "V = IR", "E = mc²", "P = IV"], 0, "Newton’s second law."],
+  ["Which planet is the largest in the Solar System?", ["Saturn", "Earth", "Neptune", "Jupiter"], 3, "Jupiter is more than twice as massive as all the other planets combined."],
+  ["Which gas makes up most of Earth’s atmosphere?", ["Oxygen", "Nitrogen", "Carbon dioxide", "Argon"], 1, "About 78% nitrogen."],
+  ["Which blood vessels carry blood away from the heart?", ["Veins", "Capillaries", "Arteries", "Valves"], 2, "Arteries carry blood away at high pressure."],
+  ["Which type of rock forms from cooled magma?", ["Igneous", "Sedimentary", "Metamorphic", "Fossil"], 0, "Like granite and basalt."],
+  ["What does a catalyst do?", ["Gets used up in the reaction", "Raises activation energy", "Lowers activation energy", "Stops the reaction"], 2, "It speeds reactions up without being used up."],
+  ["Which wave can travel through a vacuum?", ["Sound", "Light", "Water waves", "Seismic waves"], 1, "Electromagnetic waves don’t need a medium."],
+  ["Adenine pairs with…", ["Cytosine", "Guanine", "Thymine", "Uracil in DNA"], 2, "A–T and C–G."],
+  ["What causes the seasons?", ["Distance from the Sun", "Earth’s tilted axis", "The Moon", "Solar flares"], 1, "Earth is tilted about 23.4°."]
+];
+const GLOSSARY = [
+  ["Acceleration", "The rate of change of velocity, in m/s²."],
+  ["Activation energy", "The minimum energy particles need to react when they collide."],
+  ["Alkali", "A base that dissolves in water, giving a pH above 7."],
+  ["Allele", "A different version of the same gene."],
+  ["Atom", "The smallest particle of an element, made of protons, neutrons and electrons."],
+  ["Catalyst", "A substance that speeds up a reaction without being used up."],
+  ["Chromosome", "A long, coiled molecule of DNA carrying many genes."],
+  ["Compound", "Two or more elements chemically bonded together."],
+  ["Current", "The rate of flow of electric charge, measured in amperes (A)."],
+  ["Diffusion", "The spreading of particles from high to low concentration."],
+  ["Ecosystem", "All the living things in an area and their non-living environment."],
+  ["Electron", "A tiny negatively charged particle found in shells around the nucleus."],
+  ["Element", "A substance made of only one type of atom."],
+  ["Endothermic", "A reaction that takes in energy from the surroundings."],
+  ["Enzyme", "A biological catalyst, made of protein."],
+  ["Exothermic", "A reaction that gives out energy to the surroundings."],
+  ["Frequency", "The number of waves passing a point each second, in hertz (Hz)."],
+  ["Gene", "A section of DNA that codes for a protein."],
+  ["Homeostasis", "Keeping conditions inside the body constant."],
+  ["Ion", "An atom or molecule that has gained or lost electrons, so it has a charge."],
+  ["Isotope", "Atoms of the same element with different numbers of neutrons."],
+  ["Kinetic energy", "Energy an object has because it’s moving."],
+  ["Mole", "6.022 × 10²³ particles of a substance."],
+  ["Momentum", "Mass × velocity, in kg m/s."],
+  ["Neutron", "A neutral particle in the nucleus."],
+  ["Osmosis", "Diffusion of water across a partially permeable membrane."],
+  ["Photon", "A packet of electromagnetic energy."],
+  ["Proton", "A positively charged particle in the nucleus."],
+  ["Resistance", "How much a component opposes current, in ohms (Ω)."],
+  ["Velocity", "Speed in a given direction."],
+  ["Voltage", "The potential difference that pushes current around a circuit, in volts (V)."],
+  ["Wavelength", "The distance from one point on a wave to the same point on the next."]
+];
+// physical constants (SI; the first five are exact by definition since 2019)
+const CONSTANTS = [
+  ["Speed of light in vacuum", "c", "299 792 458 m s⁻¹", "exact"],
+  ["Planck constant", "h", "6.626 070 15 × 10⁻³⁴ J s", "exact"],
+  ["Elementary charge", "e", "1.602 176 634 × 10⁻¹⁹ C", "exact"],
+  ["Avogadro constant", "Nₐ", "6.022 140 76 × 10²³ mol⁻¹", "exact"],
+  ["Boltzmann constant", "k", "1.380 649 × 10⁻²³ J K⁻¹", "exact"],
+  ["Molar gas constant", "R", "8.314 462 618… J mol⁻¹ K⁻¹", "exact"],
+  ["Gravitational constant", "G", "6.674 30 × 10⁻¹¹ N m² kg⁻²", "measured"],
+  ["Standard gravity", "g", "9.806 65 m s⁻²", "defined"],
+  ["Electron mass", "mₑ", "9.109 383 7 × 10⁻³¹ kg", "measured"],
+  ["Proton mass", "mₚ", "1.672 621 92 × 10⁻²⁷ kg", "measured"]
+];
+// formula solvers: fill in all but one box
+const CALCS = [
+  { t: "Ohm’s law", eq: "V = I × R", v: [["V", "Voltage", "V"], ["I", "Current", "A"], ["R", "Resistance", "Ω"]], solve: { V: x => x.I * x.R, I: x => x.V / x.R, R: x => x.V / x.I } },
+  { t: "Newton’s second law", eq: "F = m × a", v: [["F", "Force", "N"], ["m", "Mass", "kg"], ["a", "Acceleration", "m/s²"]], solve: { F: x => x.m * x.a, m: x => x.F / x.a, a: x => x.F / x.m } },
+  { t: "Density", eq: "ρ = m ÷ V", v: [["ρ", "Density", "kg/m³"], ["m", "Mass", "kg"], ["V", "Volume", "m³"]], solve: { "ρ": x => x.m / x.V, m: x => x["ρ"] * x.V, V: x => x.m / x["ρ"] } },
+  { t: "Speed", eq: "v = d ÷ t", v: [["v", "Speed", "m/s"], ["d", "Distance", "m"], ["t", "Time", "s"]], solve: { v: x => x.d / x.t, d: x => x.v * x.t, t: x => x.d / x.v } },
+  { t: "Wave speed", eq: "v = f × λ", v: [["v", "Wave speed", "m/s"], ["f", "Frequency", "Hz"], ["λ", "Wavelength", "m"]], solve: { v: x => x.f * x["λ"], f: x => x.v / x["λ"], "λ": x => x.v / x.f } },
+  { t: "Kinetic energy", eq: "Eₖ = ½ m v²", v: [["E", "Kinetic energy", "J"], ["m", "Mass", "kg"], ["v", "Speed", "m/s"]], solve: { E: x => .5 * x.m * x.v * x.v, m: x => 2 * x.E / (x.v * x.v), v: x => Math.sqrt(2 * x.E / x.m) } }
+];
+const EL_SYM = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og".split(" ");
+const EL_NAME = "Hydrogen Helium Lithium Beryllium Boron Carbon Nitrogen Oxygen Fluorine Neon Sodium Magnesium Aluminium Silicon Phosphorus Sulfur Chlorine Argon Potassium Calcium Scandium Titanium Vanadium Chromium Manganese Iron Cobalt Nickel Copper Zinc Gallium Germanium Arsenic Selenium Bromine Krypton Rubidium Strontium Yttrium Zirconium Niobium Molybdenum Technetium Ruthenium Rhodium Palladium Silver Cadmium Indium Tin Antimony Tellurium Iodine Xenon Caesium Barium Lanthanum Cerium Praseodymium Neodymium Promethium Samarium Europium Gadolinium Terbium Dysprosium Holmium Erbium Thulium Ytterbium Lutetium Hafnium Tantalum Tungsten Rhenium Osmium Iridium Platinum Gold Mercury Thallium Lead Bismuth Polonium Astatine Radon Francium Radium Actinium Thorium Protactinium Uranium Neptunium Plutonium Americium Curium Berkelium Californium Einsteinium Fermium Mendelevium Nobelium Lawrencium Rutherfordium Dubnium Seaborgium Bohrium Hassium Meitnerium Darmstadtium Roentgenium Copernicium Nihonium Flerovium Moscovium Livermorium Tennessine Oganesson".split(" ");
+
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const keep = { get(k, d) { try { const v = localStorage.getItem("sci-notes:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+                 set(k, v) { try { localStorage.setItem("sci-notes:" + k, JSON.stringify(v)); } catch (e) {} } };
+  const subj = Object.fromEntries(SUBJECTS.map(s => [s.k, s]));
+
+  // smooth jumps without touching the URL hash (the hash belongs to the lab)
+  document.querySelectorAll("#sci [data-go]").forEach(b => b.addEventListener("click", e => {
+    e.preventDefault(); const t = $(b.dataset.go); (t || document.body).scrollIntoView({ behavior: "smooth" });
+  }));
+
+  // stats
+  $("sStats").innerHTML = [[NOTES.length, "notes"], [SUBJECTS.length, "subjects"], [118, "elements"], [QUIZ.length, "quiz questions"]].map(([n, l]) => `<div><b>${n}</b>${l}</div>`).join("");
+
+  // facts: one per day, plus a button for more
+  let fi = Math.floor(Date.now() / 864e5) % FACTS.length;
+  const showFact = () => { $("sFact").textContent = FACTS[fi]; };
+  $("sFactNext").onclick = () => { fi = (fi + 1) % FACTS.length; showFact(); }; showFact();
+
+  // notes
+  let tab = keep.get("tab", "all"), q = "";
+  const mins = n => Math.max(1, Math.round((n[2] + " " + n[3].join(" ")).split(/\s+/).length / 120));
+  function renderTabs() {
+    $("sTabs").innerHTML = [{ k: "all", name: "All", ico: "📚" }, ...SUBJECTS].map(s => `<button role="tab" data-k="${s.k}" aria-selected="${s.k === tab}">${s.ico} ${s.name}</button>`).join("");
+    $("sTabs").querySelectorAll("button").forEach(b => b.onclick = () => { tab = b.dataset.k; keep.set("tab", tab); renderTabs(); renderNotes(); });
+  }
+  function renderNotes() {
+    const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const list = NOTES.filter(n => (q || tab === "all" || n[0] === tab) && words.every(w => (n[1] + " " + n[2] + " " + n[3].join(" ") + " " + subj[n[0]].name).toLowerCase().includes(w)));
+    $("sNoteCount").textContent = q ? `${list.length} found` : `${list.length} notes`;
+    $("sEmpty").hidden = list.length > 0;
+    $("sCards").innerHTML = list.map((n, i) => `<article class="s-card"><div class="meta"><span>${subj[n[0]].ico} ${subj[n[0]].name}</span><span>${mins(n)} min read</span></div>
+      <h3>${esc(n[1])}</h3><p>${esc(n[2])}</p>${n[4] ? `<span class="eq">${esc(n[4])}</span>` : ""}
+      <ul hidden>${n[3].map(k => `<li>${esc(k)}</li>`).join("")}</ul><button class="s-more" type="button">Key points ▾</button></article>`).join("");
+    $("sCards").querySelectorAll(".s-more").forEach(b => b.onclick = () => { const ul = b.previousElementSibling; ul.hidden = !ul.hidden; b.textContent = ul.hidden ? "Key points ▾" : "Hide key points ▴"; });
+  }
+  $("sSearch").addEventListener("input", e => { q = e.target.value.trim(); renderNotes(); });
+  $("sSearch").addEventListener("keydown", e => { if (e.key === "Enter") $("notes").scrollIntoView({ behavior: "smooth" }); });
+  renderTabs(); renderNotes();
+
+  // periodic table
+  const FAM = { alkali: ["Alkali metal", "#FFB4A2"], alkaline: ["Alkaline earth metal", "#FFD6A5"], transition: ["Transition metal", "#FDE68A"], post: ["Post-transition metal", "#C7E9B0"],
+    metalloid: ["Metalloid", "#A7E3D8"], nonmetal: ["Reactive non-metal", "#BDE0FE"], halogen: ["Halogen", "#A5C8FF"], noble: ["Noble gas", "#D7C4F5"], lanth: ["Lanthanide", "#F9C6E0"], act: ["Actinide", "#F4B8C8"] };
+  const inSet = (z, s) => s.includes(z);
+  function family(z) {
+    if (inSet(z, [3, 11, 19, 37, 55, 87])) return "alkali";
+    if (inSet(z, [4, 12, 20, 38, 56, 88])) return "alkaline";
+    if (inSet(z, [2, 10, 18, 36, 54, 86, 118])) return "noble";
+    if (inSet(z, [9, 17, 35, 53, 85, 117])) return "halogen";
+    if (z >= 57 && z <= 71) return "lanth";
+    if (z >= 89 && z <= 103) return "act";
+    if (inSet(z, [5, 14, 32, 33, 51, 52])) return "metalloid";
+    if (inSet(z, [1, 6, 7, 8, 15, 16, 34])) return "nonmetal";
+    if ((z >= 21 && z <= 30) || (z >= 39 && z <= 48) || (z >= 72 && z <= 80) || (z >= 104 && z <= 112)) return "transition";
+    return "post";
+  }
+  function place(z) { // [row, column] in the 18-column layout; rows 9 and 10 hold the f-block
+    if (z === 1) return [1, 1]; if (z === 2) return [1, 18];
+    if (z <= 18) { const p = z <= 10 ? 2 : 3, i = z - (p === 2 ? 2 : 10); return [p, i <= 2 ? i : i + 10]; }
+    if (z <= 54) { const p = z <= 36 ? 4 : 5; return [p, z - (p === 4 ? 18 : 36)]; }
+    const p = z <= 86 ? 6 : 7, base = p === 6 ? 54 : 86, i = z - base;
+    if (i <= 2) return [p, i]; if (i <= 17) return [p === 6 ? 9 : 10, i + 1]; return [p, i - 14];
+  }
+  const cells = EL_SYM.map((s, i) => { const z = i + 1, [r, c] = place(z), f = family(z);
+    return `<button style="grid-row:${r >= 9 ? r + 1 : r};grid-column:${c};background:${FAM[f][1]}" data-z="${z}" title="${EL_NAME[i]}"><small>${z}</small><b>${s}</b></button>`; });
+  $("pt").innerHTML = cells.join("") + `<div class="gap" style="grid-row:9"></div>`;
+  $("pt").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const z = +b.dataset.z, f = family(z), [r] = place(z);
+    $("pt").querySelectorAll(".on").forEach(x => x.classList.remove("on")); b.classList.add("on");
+    const period = r >= 9 ? (r === 9 ? 6 : 7) : r;
+    $("ptInfo").innerHTML = `<b>${EL_NAME[z - 1]} (${EL_SYM[z - 1]})</b><span>Atomic number ${z} · period ${period} · ${FAM[f][0].toLowerCase()} · ${z} protons, ${z} electrons in a neutral atom</span>`; });
+  $("ptKey").innerHTML = Object.values(FAM).map(([n, c]) => `<span><i style="background:${c}"></i>${n}</span>`).join("");
+
+  // calculators
+  const fmt = v => !isFinite(v) ? "—" : Math.abs(v) >= 1e6 || (Math.abs(v) < 1e-3 && v !== 0) ? v.toExponential(3) : (+v.toPrecision(6)).toString();
+  $("sCalcs").innerHTML = CALCS.map((c, i) => `<div class="s-card calc" data-i="${i}"><h3>${c.t}</h3><span class="eq">${c.eq}</span><div class="row">${c.v.map(([k, l, u]) => `<label><span>${l} (${k})</span><input type="number" step="any" data-k="${k}"><em>${u}</em></label>`).join("")}</div><button class="go" type="button">Solve</button><div class="out"></div></div>`).join("");
+  $("sCalcs").querySelectorAll(".calc").forEach(el => {
+    const c = CALCS[+el.dataset.i];
+    el.querySelector(".go").onclick = () => { const x = {}, empty = [];
+      el.querySelectorAll("input").forEach(inp => { if (inp.value === "") empty.push(inp.dataset.k); else x[inp.dataset.k] = parseFloat(inp.value); });
+      const out = el.querySelector(".out");
+      if (empty.length !== 1) { out.textContent = "Fill in exactly two boxes."; return; }
+      const k = empty[0], v = c.solve[k](x), unit = c.v.find(a => a[0] === k)[2];
+      out.textContent = isFinite(v) ? `${k} = ${fmt(v)} ${unit}` : "Can’t divide by zero.";
+      if (isFinite(v)) el.querySelector(`input[data-k="${k}"]`).value = +v.toPrecision(8); };
+  });
+  const tC = $("tC"), tF = $("tF"), tK = $("tK"), r2 = v => +v.toFixed(2);
+  const fromC = c => { tF.value = r2(c * 9 / 5 + 32); tK.value = r2(c + 273.15); };
+  tC.oninput = () => tC.value !== "" && fromC(+tC.value);
+  tF.oninput = () => { if (tF.value === "") return; const c = (+tF.value - 32) * 5 / 9; tC.value = r2(c); tK.value = r2(c + 273.15); };
+  tK.oninput = () => { if (tK.value === "") return; const c = +tK.value - 273.15; tC.value = r2(c); tF.value = r2(c * 9 / 5 + 32); };
+  fromC(20);
+
+  // constants
+  $("sConst").innerHTML = CONSTANTS.map(([n, s, v, t]) => `<tr><td>${n}</td><td><i>${s}</i></td><td>${v}</td><td><span class="tag">${t}</span></td></tr>`).join("");
+
+  // quiz
+  let order = [], at = 0, score = 0, answered = false;
+  const best = () => { const b = keep.get("best", null); $("qBest").textContent = b == null ? `${QUIZ.length} questions` : `best: ${b}/${QUIZ.length}`; };
+  function start() { order = QUIZ.map((_, i) => i).sort(() => Math.random() - .5); at = 0; score = 0; ask(); }
+  function ask() {
+    answered = false;
+    if (at >= order.length) {
+      const b = keep.get("best", 0); if (score > b) keep.set("best", score); best();
+      $("qBox").innerHTML = `<div class="q">You scored ${score} out of ${order.length}.</div><p>${score === order.length ? "Perfect score." : score >= order.length * .75 ? "Great work. Check the notes for the ones you missed." : "Have a look through the notes and try again."}</p><button class="next" type="button" id="qAgain">Try again</button>`;
+      $("qAgain").onclick = start; return;
+    }
+    const [qq, opts] = QUIZ[order[at]];
+    $("qBox").innerHTML = `<div class="bar"><i style="width:${at / order.length * 100}%"></i></div><div class="meta" style="margin-top:12px"><span>Question ${at + 1} of ${order.length}</span><span>Score ${score}</span></div><div class="q">${esc(qq)}</div><div class="opts">${opts.map((o, i) => `<button type="button" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="why"></div>`;
+    $("qBox").querySelectorAll(".opts button").forEach(b => b.onclick = () => {
+      if (answered) return; answered = true; const [, , right, why] = QUIZ[order[at]], i = +b.dataset.i;
+      if (i === right) score++;
+      $("qBox").querySelectorAll(".opts button").forEach(x => { if (+x.dataset.i === right) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+      $("qBox").querySelector(".why").textContent = (i === right ? "Correct. " : "Not quite. ") + why;
+      const n = document.createElement("button"); n.className = "next"; n.type = "button"; n.textContent = at + 1 < order.length ? "Next question →" : "See score";
+      n.onclick = () => { at++; ask(); }; $("qBox").appendChild(n);
+    });
+  }
+  best(); start();
+
+  // glossary
+  function renderGloss(f) {
+    const list = GLOSSARY.filter(([t, d]) => (t + " " + d).toLowerCase().includes(f.toLowerCase()));
+    $("gCount").textContent = `${list.length} terms`;
+    $("gList").innerHTML = list.map(([t, d]) => `<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("");
+  }
+  $("gFilter").addEventListener("input", e => renderGloss(e.target.value.trim())); renderGloss("");
+})();
+</script>
+</body>
+</html>
